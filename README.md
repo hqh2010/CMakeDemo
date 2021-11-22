@@ -18,6 +18,12 @@ cmake .. -DCMAKE_BUILD_TYPE="Debug" -DCMAKE_DEBUG_ASAN=ON
 
 make -j16
 
+运行
+./bin/llcmd
+
+注意:
+也可以通过提供的makefile文件直接构建目标二进制
+
 # 清理
 
 make clean
