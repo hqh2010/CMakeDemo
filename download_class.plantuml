@@ -1,0 +1,77 @@
+@startuml
+LingLongCmdBase <|.. DownLoadCmd
+LingLongCmdBase <|.. InstallCmd
+LingLongCmdBase <|.. UpdateCmd
+LingLongCmdBase <|.. UninstallCmd
+LingLongCmdBase <|.. QueryCmd
+LingLongCmdBase <|.. HelpCmd
+ClientInvoker "1" *-- "n" LingLongCmdBase : aggregation
+
+class ClientInvoker {
+- map<string, LingLongCmdBase*> mMap
++ ClientInvoker()
++ ~ClientInvoker()
++ int runCmd(int argc, char** argv)
+}
+
+class LingLongCmdBase {
+# LingLong* mDir
++ int extractCmd(int, char**)
++ int verifyCmd(int, char**)
++ int execCmd(int, char**)
++ void show()
+}
+
+class DownLoadCmd {
+- string mSavePath
++ int extractCmd(int, char**)
++ int verifyCmd(int, char**)
++ int execCmd(int, char**)
++ void show()
+}
+
+class InstallCmd {
++ string mAppType
++ string mInstallPath
++ bool isReinstall
++ int extractCmd(int, char**)
++ int verifyCmd(int, char**)
++ int execCmd(int, char**)
++ void show()
+}
+
+class UpdateCmd {
++ string mCommit;
++ string mDstVersion;
++ bool isReinstall
++ int extractCmd(int, char**)
++ int verifyCmd(int, char**)
++ int execCmd(int, char**)
++ void show()
+}
+
+class UninstallCmd {
++   bool isRollback
++   bool isDelData
++ int extractCmd(int, char**)
++ int verifyCmd(int, char**)
++ int execCmd(int, char**)
+- void show()
+}
+
+class QueryCmd {
++ vector<AppInfo*> mAppInfo
++ int extractCmd(int, char**)
++ int verifyCmd(int, char**)
++ int execCmd(int, char**)
++ void show()
+}
+
+class HelpCmd {
++ bool isShowDetail
++ int extractCmd(int, char**)
++ int verifyCmd(int, char**)
++ int execCmd(int, char**)
++ void show()
+}
+@enduml

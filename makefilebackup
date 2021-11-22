@@ -1,0 +1,39 @@
+PROG=llcmd
+CC=g++
+BINDIR=$(DESTDIR)/usr/bin
+INSTALL=cp
+
+CURRENT_DIR = $(shell pwd)
+UTILSSRC=$(CURRENT_DIR)/utils/*.cpp
+
+$(PROG):llmain.cpp llInvoker.o InstallCmd.o UpdateCmd.o LogUtils.o llBaseCmd.o
+	$(CC) -o $(PROG) llmain.cpp llInvoker.o InstallCmd.o UpdateCmd.o LogUtils.o llBaseCmd.o
+
+llInvoker.o:$(CURRENT_DIR)/basecmd/llInvoker.cpp InstallCmd.o UpdateCmd.o LogUtils.o llBaseCmd.o
+	$(CC) -c $(CURRENT_DIR)/basecmd/llInvoker.cpp InstallCmd.o UpdateCmd.o LogUtils.o llBaseCmd.o
+
+InstallCmd.o:$(CURRENT_DIR)/speccmd/InstallCmd.cpp  $(CURRENT_DIR)/basecmd/llBaseCmd.h $(CURRENT_DIR)/utils/LogUtils.h
+	$(CC) -c $(CURRENT_DIR)/speccmd/InstallCmd.cpp
+
+UpdateCmd.o:$(CURRENT_DIR)/speccmd/UpdateCmd.cpp  $(CURRENT_DIR)/basecmd/llBaseCmd.h $(CURRENT_DIR)/utils/LogUtils.h
+	$(CC) -c $(CURRENT_DIR)/speccmd/UpdateCmd.cpp
+
+llBaseCmd.o:$(CURRENT_DIR)/basecmd/llBaseCmd.cpp $(CURRENT_DIR)/utils/LogUtils.h
+	$(CC) -c $(CURRENT_DIR)/basecmd/llBaseCmd.cpp
+
+LogUtils.o:$(CURRENT_DIR)/utils/LogUtils.cpp
+	$(CC) -c $(CURRENT_DIR)/utils/LogUtils.cpp
+
+print:
+#echo 前面添加@符号是为了避免命令本身输出到终端
+	@echo $(BINDIR)
+	@echo $(CURRENT_DIR)
+clean:
+	rm -rf $(PROG) *.o
+install:
+	mkdir -p $(BINDIR)
+	$(INSTALL) $(PROG) $(BINDIR)
+uninstall:
+	rm -rf $(BINDIR)/$(PROG) 	
+
+

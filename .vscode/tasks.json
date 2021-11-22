@@ -1,0 +1,33 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "llcmd",
+            "type": "shell",
+            "command": "g++",
+            "args": [ //这一部分是自己添加的,是给命令添加的参数
+                //实际就是在终端执行(以 Main.cpp为例):
+                // g++ -g Main.cpp -o Main.out
+                //命令执行后,在文件空间下出现Main.out文件,这样 Launch.json文件就可以负责运行该可执行文件了
+                "-g",
+                "-I/usr/include/glib-2.0/",
+                "-I/usr/lib/x86_64-linux-gnu/glib-2.0/include/",
+                //"-I/usr/include/libsoup-2.4",
+                "-I/usr/include/x86_64-linux-gnu/"
+                "-lcurl",
+                "-lglib-2.0",
+                "-lgio-2.0",
+                //"-lsoup-2.4",
+                //"-std=c11",
+                "${workspaceFolder}/*.cpp",
+                "${workspaceFolder}/src/basecmd/*.cpp",
+                "${workspaceFolder}/src/speccmd/*.cpp",
+                "${workspaceFolder}/src/utils/*.cpp",
+                "-o",
+                "${workspaceFolder}/llcmd"
+            ]
+        }
+    ]
+}

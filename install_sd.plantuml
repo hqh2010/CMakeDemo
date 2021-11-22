@@ -1,0 +1,16 @@
+@startuml
+skinparam responseMessageBelowArrow true
+"Client(客户端命令处理入口)" -> "Client(客户端命令处理入口)"  : 解析命令(addPositionalArgument/parse)
+"Client(客户端命令处理入口)" -> "Client(客户端命令处理入口)"  : 查找subcommandMap并设置subCmd子命令解析参数
+"Client(客户端命令处理入口)" -> PackageManager : Install
+PackageManager -> PackageManager : getAppInstallStatus 查询应用安装状态
+PackageManager -> Repo : getAppDeps 查询应用meta data信息并解析获取应用运行runtime信息
+PackageManager <-- Repo : 返回应用meta data信息
+PackageManager -> Repo : rePull runtime信息
+PackageManager <-- Repo : 返回应用runtime信息
+PackageManager -> Repo : checkOutAppData 签出runtime信息并安装
+PackageManager -> Repo : rePull 目标软件包信息
+PackageManager <-- Repo : 返回应用目标软件包信息
+PackageManager -> Repo : checkOutAppData 目标软件包信息
+PackageManager -> PackageManager : deployApp 创建符合box要求目录并拷贝软件包数据到对应目录
+@enduml

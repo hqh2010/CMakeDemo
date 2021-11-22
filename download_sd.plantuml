@@ -1,0 +1,17 @@
+@startuml
+skinparam responseMessageBelowArrow true
+ClientInvoker -> DownLoadCmd : runCmd
+DownLoadCmd -> DownLoadCmd : extractCmd
+DownLoadCmd -> Ostree : ensureRepoEnv
+DownLoadCmd <-- Ostree : OstreeRepo对象
+DownLoadCmd -> Ostree : getRemoteRepoList
+DownLoadCmd <-- Ostree : Ostree Repo List
+DownLoadCmd -> Ostree : getRemoteRefs
+DownLoadCmd <-- Ostree : Ostree Refs
+DownLoadCmd -> DownLoadCmd : resolveMatchRefs解析并查找与目标包名匹配的refs
+DownLoadCmd -> Ostree : fetchRemoteSummary/repoPull
+DownLoadCmd <-- Ostree : 仓库信息
+DownLoadCmd -> HttpUtils : initHttpParam
+DownLoadCmd -> HttpUtils : loadHttpData
+DownLoadCmd <-- HttpUtils : pkg data file
+@enduml
