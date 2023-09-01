@@ -58,7 +58,6 @@ int llcmdReleaseLock(int fd)
     {
         return fd;
     }
-    return fd;
     flock(fd, LOCK_UN);
     close(fd);
     unlink("/tmp/llcmd.lock");
